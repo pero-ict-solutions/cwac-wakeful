@@ -103,7 +103,10 @@ abstract public class WakefulIntentService extends IntentService {
       doWakefulWork(intent);
     }
     finally {
-      getLock(this.getApplicationContext()).release();
+			PowerManager.WakeLock lock = getLock(this.getApplicationContext());
+			if(lock.isHeld()) {
+				lock.release();
+			}
     }
   }
   
